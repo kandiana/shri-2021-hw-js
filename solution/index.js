@@ -4,19 +4,7 @@ module.exports = class {
   constructor(data) {
     this.value = [];
 
-    if (data !== undefined || data !== null) {
-      if (Array.isArray(data)) {
-        data.forEach((el) => {
-          if (!this.value.includes(el)) {
-            this.value.push(el);
-          }
-        });
-      } else {
-        this.value.push(data);
-      }
-    }
-
-    this.size = this.value.length;
+    this.add(data);
   }
 
   [Symbol.iterator] = function () {
@@ -31,8 +19,10 @@ module.exports = class {
     };
   };
 
+  [Symbol.toStringTag] = '^_^';
+
   add(data) {
-    if (data !== undefined || data !== null) {
+    if (data !== undefined && data !== null) {
       if (Array.isArray(data)) {
         data.forEach((el) => {
           if (!this.value.includes(el)) {
@@ -47,6 +37,8 @@ module.exports = class {
     }
 
     this.size = this.value.length;
+
+    return this;
   }
 
   clear() {
@@ -56,7 +48,21 @@ module.exports = class {
 
   delete(data) {
     this.value = this.value.filter((el) => el !== data);
-    this.size = this.length;
+    this.size = this.value.length;
+
+    return this;
+  }
+
+  has(data) {
+    if (this.value.includes(data)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  valueOf() {
+    return this;
   }
 
   keys() {
@@ -69,5 +75,9 @@ module.exports = class {
 
   entries() {
     return this.value.map((el) => [el, el]);
+  }
+
+  forEach(cb, thisArg) {
+    this.value.forEach(cb, thisArg);
   }
 };
