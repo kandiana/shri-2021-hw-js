@@ -7,7 +7,7 @@ module.exports = class {
     this.add(data);
   }
 
-  [Symbol.iterator] = function () {
+  [Symbol.iterator]() {
     let i = 0;
     return {
       next: () => {
@@ -17,7 +17,7 @@ module.exports = class {
         };
       },
     };
-  };
+  }
 
   [Symbol.toStringTag] = '^_^';
 
@@ -65,17 +65,23 @@ module.exports = class {
     return this;
   }
 
-  keys() {
-    return this.value;
-  }
+  keys = function* () {
+    for (let i = 0; i < this.size; i++) {
+      yield this.value[i];
+    }
+  };
 
-  values() {
-    return this.value;
-  }
+  values = function* () {
+    for (let i = 0; i < this.size; i++) {
+      yield this.value[i];
+    }
+  };
 
-  entries() {
-    return this.value.map((el) => [el, el]);
-  }
+  entries = function* () {
+    for (let i = 0; i < this.size; i++) {
+      yield [this.value[i], this.value[i]];
+    }
+  };
 
   forEach(cb, thisArg) {
     this.value.forEach(cb, thisArg);
